@@ -8,6 +8,7 @@ contract Auction {
     uint public auctionStartTime; // hora de inicio de la subasta
     uint public auctionEndTime; //variable de tiempo de finalización de la subasta
     bool public finalized; // variable booleana finalizada 
+    bool public commissionWithdrawn;
 
 
 uint public constant EXTENSION_TIME = 10 minutes;
@@ -160,11 +161,13 @@ function showBids() external view returns (address[] memory, uint[] memory){
 function withdrawCommission() external onlyOwner {
         require(finalized, "Subasta: La subasta debe ser finalizada para retirar la comision.");
         require(winningBid > 0, "Subasta: No hay oferta ganadora para calcular la comision.");
+        require(!commissionWithdrawn, "Subasta: La comision ya ha sido retirada.");
 
         uint commission = (winningBid * COMMISSION_PERCENTAGE) / 100;
 
         require(commission > 0, "Subasta: No hay comision para retirar o ya ha sido retirado.");
 
+        commissionWithdrawn = true;
 
        (bool success, ) = payable(owner).call{value: commission}("");
         require(success, "Subasta: No retiro la comision.");
