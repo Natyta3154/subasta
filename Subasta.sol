@@ -55,7 +55,7 @@ function bid() external payable onlyWhileActive{
     require(msg.value > 0, "Debes enviar ETH.");
 
     ParticipantBid storage userBid = bids[msg.sender];
-    uint newTotalBid = userBid.currentAmount + msg.value;
+    uint newTotalBid = msg.value;
 
 
 // La nueva oferta debe ser 2% mayor que la oferta propia anterior del ofertante 
