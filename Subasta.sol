@@ -118,9 +118,7 @@ function withdrawExcess() external {
     if (finalized && msg.sender != winner){
         amountToWithdraw = userBid.totalDeposited - (userBid.totalDeposited * COMMISSION_PERCENTAGE)/100;
         userBid.totalDeposited = 0;
-        // IMPORTANTE: Asegurarse de que el montoActual también se "limpie" para el perdedor si se ha reembolsado todo.
-        // Esto es crucial para que `mostrarOfertas` refleje 0 para los que retiraron.
-
+       
         userBid.currentAmount = 0;
         emit LoserRefunded(msg.sender, amountToWithdraw);
     }else {
